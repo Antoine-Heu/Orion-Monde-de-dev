@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -27,9 +29,6 @@ public class Topic {
     @NotEmpty
     String description;
 
-    @OneToMany(mappedBy = "topic")
-    private List<Post> posts;
-
-    @ManyToMany(mappedBy = "subscribedTopics")
-    private List<User> subscribers;
+    @CreationTimestamp
+    LocalDateTime createdAt;
 }

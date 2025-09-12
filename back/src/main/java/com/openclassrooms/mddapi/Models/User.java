@@ -1,9 +1,6 @@
 package com.openclassrooms.mddapi.Models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
@@ -20,6 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class User {
 
     @Id
@@ -56,20 +54,4 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "topic_id")
     )
     private List<Topic> subscribedTopics;
-
-    @OneToMany(mappedBy = "author")
-    private List<Comment> comments;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-
-        // I may have to add foreign keys later ???
-    }
 }

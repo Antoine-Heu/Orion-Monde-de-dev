@@ -101,7 +101,11 @@ public class TopicService {
     }
 
     public TopicsResponseDto getSubscribedTopicsDto(Integer userId) {
-        List<Topic> topics = topicRepository.findTopicsBySubscriberId(userId);
-        return toTopicsResponseDto(topics);
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            List<Topic> topics = user.get().getSubscribedTopics();
+            return toTopicsResponseDto(topics);
+        }
+        return new TopicsResponseDto();
     }
 }

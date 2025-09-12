@@ -32,7 +32,7 @@ public class AuthenticationService {
     }
 
     public TokenResponseDto authenticate(LoginRequest loginRequest) {
-        User user = userRepository.findByUsernameOrEmail(loginRequest.getIdentifier())
+        User user = userRepository.findByUsernameOrEmail(loginRequest.getIdentifier(), loginRequest.getIdentifier())
                 .orElseThrow(() -> new RuntimeException("Invalid identifier"));
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
@@ -42,13 +42,9 @@ public class AuthenticationService {
     };
 
     public TokenResponseDto authenticate(RegisterRequest registerRequest) {
-        Optional<User> existingUserByUsername = userRepository.findByUsername(registerRequest.getUsername());
+        Optional<User> existingUserByUsername = userRepository.findByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail());
         if (existingUserByUsername.isPresent()) {
-            throw new RuntimeException("Username already in use");
-        }
-        Optional<User> existingUserByEmail = userRepository.findByEmail(registerRequest.getEmail());
-        if (existingUserByEmail.isPresent()) {
-            throw new RuntimeException("Email already in use");
+            throw new RuntimeException("Problem during creation of account");
         }
 
         User newUser = modelMapper.map(registerRequest, User.class);
@@ -59,7 +55,7 @@ public class AuthenticationService {
     };
 
     public User getCurrentUser(String identifier) {
-        return userRepository.findByUsernameOrEmail(identifier)
+        return userRepository.findByUsernameOrEmail(identifier, identifier)
             .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
