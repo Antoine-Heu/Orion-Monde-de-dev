@@ -28,10 +28,6 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
-    public void deletePost(Integer id) {
-        postRepository.deleteById(id);
-    }
-
     private PostDto toPostDto(Post post) {
         return new PostDto(
                 post.getId(),
@@ -53,11 +49,6 @@ public class PostService {
         PostsResponseDto response = new PostsResponseDto();
         response.setPosts(postDtos);
         return response;
-    }
-
-    public PostsResponseDto getAllPostsDto() {
-        List<Post> posts = postRepository.findAll();
-        return toPostsResponseDto(posts);
     }
 
     public PostDto getPostByIdDto(Integer id) {
@@ -82,25 +73,6 @@ public class PostService {
         } else {
             throw new RuntimeException("Author or Topic not found");
         }
-    }
-
-    public PostDto updatePostDto(Integer id, PostCreateDto postDetails) {
-        return postRepository.findById(id)
-                .map(post -> {
-                    post.setTitle(postDetails.getTitle());
-                    post.setContent(postDetails.getContent());
-                    
-                    if (postDetails.getTopicId() != null) {
-                        Optional<Topic> topic = topicRepository.findById(postDetails.getTopicId());
-                        if (topic.isPresent()) {
-                            post.setTopic(topic.get());
-                        }
-                    }
-                    
-                    Post updatedPost = postRepository.save(post);
-                    return toPostDto(updatedPost);
-                })
-                .orElse(null);
     }
 
     public PostsResponseDto getPostsByUserSubscriptionsDto(Integer userId) {

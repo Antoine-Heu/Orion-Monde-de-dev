@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.Services;
 
-import com.openclassrooms.mddapi.Dto.TopicDto;
+import com.openclassrooms.mddapi.Dto.TopicResponseDto;
 import com.openclassrooms.mddapi.Dto.TopicsResponseDto;
 import com.openclassrooms.mddapi.Models.Topic;
 import com.openclassrooms.mddapi.Models.User;
@@ -59,13 +59,17 @@ public class TopicService {
         }
     }
 
-    private TopicDto toTopicDto(Topic topic) {
-        return new TopicDto(topic.getId(), topic.getTitle(), topic.getDescription());
+    private TopicResponseDto toTopicResponseDto(Topic topic) {
+        TopicResponseDto dto = new TopicResponseDto();
+        dto.setId(topic.getId());
+        dto.setTitle(topic.getTitle());
+        dto.setDescription(topic.getDescription());
+        return dto;
     }
 
     private TopicsResponseDto toTopicsResponseDto(List<Topic> topics) {
-        List<TopicDto> topicDtos = topics.stream()
-                .map(this::toTopicDto)
+        List<TopicResponseDto> topicDtos = topics.stream()
+                .map(this::toTopicResponseDto)
                 .collect(Collectors.toList());
 
         TopicsResponseDto response = new TopicsResponseDto();
@@ -78,24 +82,24 @@ public class TopicService {
         return toTopicsResponseDto(topics);
     }
 
-    public TopicDto getTopicByIdDto(Integer id) {
+    public TopicResponseDto getTopicByIdDto(Integer id) {
         return topicRepository.findById(id)
-                .map(this::toTopicDto)
+                .map(this::toTopicResponseDto)
                 .orElse(null);
     }
 
-    public TopicDto createTopicDto(Topic topic) {
+    public TopicResponseDto createTopicDto(Topic topic) {
         Topic savedTopic = topicRepository.save(topic);
-        return toTopicDto(savedTopic);
+        return toTopicResponseDto(savedTopic);
     }
 
-    public TopicDto updateTopicDto(Integer id, Topic topicDetails) {
+    public TopicResponseDto updateTopicDto(Integer id, Topic topicDetails) {
         return topicRepository.findById(id)
                 .map(topic -> {
                     topic.setTitle(topicDetails.getTitle());
                     topic.setDescription(topicDetails.getDescription());
                     Topic updatedTopic = topicRepository.save(topic);
-                    return toTopicDto(updatedTopic);
+                    return toTopicResponseDto(updatedTopic);
                 })
                 .orElse(null);
     }

@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.Models;
 
-import lombok.*;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
@@ -13,11 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
+@Data
 public class User {
 
     @Id

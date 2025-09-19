@@ -5,5 +5,5 @@ import java.util.List;
 
 @Data
 public class TopicsResponseDto {
-    private List<TopicDto> topics;
+    private List<TopicResponseDto> topics;
 }

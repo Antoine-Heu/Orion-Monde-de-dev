@@ -3,7 +3,9 @@ package com.openclassrooms.mddapi.Controllers;
 import com.openclassrooms.mddapi.Dto.CommentCreateDto;
 import com.openclassrooms.mddapi.Dto.CommentDto;
 import com.openclassrooms.mddapi.Dto.CommentsResponseDto;
+import com.openclassrooms.mddapi.Models.User;
 import com.openclassrooms.mddapi.Services.CommentService;
+import com.openclassrooms.mddapi.Services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
@@ -17,55 +19,23 @@ import java.security.Principal;
 public class CommentController {
 
     private final CommentService commentService;
+    private final UserService userService;
 
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, UserService userService) {
         this.commentService = commentService;
-    }
-
-    @GetMapping
-    @Operation(summary = "Get all comments")
-    public ResponseEntity<CommentsResponseDto> getAllComments() {
-        CommentsResponseDto comments = commentService.getAllCommentsDto();
-        return ResponseEntity.ok(comments);
-    }
-
-    @GetMapping("/{id}")
-    @Operation(summary = "Get comment by id")
-    public ResponseEntity<CommentDto> getCommentById(@PathVariable Integer id) {
-        CommentDto comment = commentService.getCommentByIdDto(id);
-        if (comment != null) {
-            return ResponseEntity.ok(comment);
-        }
-        return ResponseEntity.notFound().build();
+        this.userService = userService;
     }
 
     @PostMapping
     @Operation(summary = "Create a new comment", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentCreateDto commentRequest, Principal principal) {
         try {
-            Integer authorId = Integer.valueOf(principal.getName());
-            CommentDto createdComment = commentService.createCommentDto(commentRequest, authorId);
+            User user = userService.getCurrentUser(principal.getName());
+            CommentDto createdComment = commentService.createCommentDto(commentRequest, user.getId());
             return ResponseEntity.ok(createdComment);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }
-    }
-
-    @PutMapping("/{id}")
-    @Operation(summary = "Update a comment", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<CommentDto> updateComment(@PathVariable Integer id, @Valid @RequestBody CommentCreateDto commentDetails) {
-        CommentDto updatedComment = commentService.updateCommentDto(id, commentDetails);
-        if (updatedComment != null) {
-            return ResponseEntity.ok(updatedComment);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a comment", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<?> deleteComment(@PathVariable Integer id) {
-        commentService.deleteComment(id);
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/post/{postId}")

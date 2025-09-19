@@ -3,7 +3,6 @@ package com.openclassrooms.mddapi.Services;
 import com.openclassrooms.mddapi.Controllers.payloads.LoginRequest;
 import com.openclassrooms.mddapi.Controllers.payloads.RegisterRequest;
 import com.openclassrooms.mddapi.Dto.TokenResponseDto;
-import com.openclassrooms.mddapi.Dto.UserResponseDto;
 import com.openclassrooms.mddapi.Models.User;
 import com.openclassrooms.mddapi.Repositories.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -52,15 +51,5 @@ public class AuthenticationService {
         this.userRepository.save(newUser);
         String token = jwtService.generateToken(newUser.getEmail());
         return new TokenResponseDto(token);
-    };
-
-    public User getCurrentUser(String identifier) {
-        return userRepository.findByUsernameOrEmail(identifier, identifier)
-            .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
-    public UserResponseDto getCurrentUserToDto(String identifier) {
-        User user = getCurrentUser(identifier);
-        return modelMapper.map(user, UserResponseDto.class);
     }
 }

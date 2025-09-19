@@ -1,9 +1,6 @@
 package com.openclassrooms.mddapi.Models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -13,10 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "topic")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Topic {
 
     @Id

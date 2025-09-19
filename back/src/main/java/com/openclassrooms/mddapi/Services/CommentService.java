@@ -28,10 +28,6 @@ public class CommentService {
         this.userRepository = userRepository;
     }
 
-    public void deleteComment(Integer id) {
-        commentRepository.deleteById(id);
-    }
-
     private CommentDto toCommentDto(Comment comment) {
         return new CommentDto(
                 comment.getId(),
@@ -52,17 +48,6 @@ public class CommentService {
         return response;
     }
 
-    public CommentsResponseDto getAllCommentsDto() {
-        List<Comment> comments = commentRepository.findAll();
-        return toCommentsResponseDto(comments);
-    }
-
-    public CommentDto getCommentByIdDto(Integer id) {
-        return commentRepository.findById(id)
-                .map(this::toCommentDto)
-                .orElse(null);
-    }
-
     public CommentDto createCommentDto(CommentCreateDto commentRequest, Integer authorId) {
         Optional<User> author = userRepository.findById(authorId);
         Optional<Post> post = postRepository.findById(commentRequest.getPostId());
@@ -78,24 +63,6 @@ public class CommentService {
         } else {
             throw new RuntimeException("Author or Post not found");
         }
-    }
-
-    public CommentDto updateCommentDto(Integer id, CommentCreateDto commentDetails) {
-        return commentRepository.findById(id)
-                .map(comment -> {
-                    comment.setContent(commentDetails.getContent());
-
-                    if (commentDetails.getPostId() != null) {
-                        Optional<Post> post = postRepository.findById(commentDetails.getPostId());
-                        if (post.isPresent()) {
-                            comment.setPost(post.get());
-                        }
-                    }
-
-                    Comment updatedComment = commentRepository.save(comment);
-                    return toCommentDto(updatedComment);
-                })
-                .orElse(null);
     }
 
     public CommentsResponseDto getCommentsByPostIdDto(Integer postId) {
