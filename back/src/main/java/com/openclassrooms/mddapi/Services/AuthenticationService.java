@@ -8,11 +8,14 @@ import com.openclassrooms.mddapi.Repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
 @Service
 public class AuthenticationService {
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository userRepository;
     private final JWTService jwtService;
     private final PasswordEncoder passwordEncoder;
@@ -31,13 +34,26 @@ public class AuthenticationService {
     }
 
     public TokenResponseDto authenticate(LoginRequest loginRequest) {
-        User user = userRepository.findByUsernameOrEmail(loginRequest.getIdentifier(), loginRequest.getIdentifier())
-                .orElseThrow(() -> new RuntimeException("Invalid identifier"));
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+        try {
+            logger.info("Attempting authentication for identifier: {}", loginRequest.getIdentifier());
+            User user = userRepository.findByUsernameOrEmail(loginRequest.getIdentifier(), loginRequest.getIdentifier())
+                    .orElseThrow(() -> {
+                        logger.warn("User not found for identifier: {}", loginRequest.getIdentifier());
+                        return new RuntimeException("Invalid identifier");
+                    });
+
+            if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                logger.warn("Invalid password for user: {}", user.getEmail());
+                throw new RuntimeException("Invalid password");
+            }
+
+            logger.info("Authentication successful for user: {}", user.getEmail());
+            String token = jwtService.generateToken(user.getEmail());
+            return new TokenResponseDto(token);
+        } catch (Exception e) {
+            logger.error("Authentication failed for identifier: {} - Error: {}", loginRequest.getIdentifier(), e.getMessage(), e);
+            throw e;
         }
-        String token = jwtService.generateToken(user.getEmail());
-        return new TokenResponseDto(token);
     };
 
     public TokenResponseDto authenticate(RegisterRequest registerRequest) {

@@ -6,6 +6,7 @@ import com.openclassrooms.mddapi.Models.Topic;
 import com.openclassrooms.mddapi.Models.User;
 import com.openclassrooms.mddapi.Repositories.TopicRepository;
 import com.openclassrooms.mddapi.Repositories.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +18,12 @@ public class TopicService {
 
     private final TopicRepository topicRepository;
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-    public TopicService(TopicRepository topicRepository, UserRepository userRepository) {
+    public TopicService(TopicRepository topicRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.topicRepository = topicRepository;
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     public void deleteTopic(Integer id) {
@@ -59,17 +62,10 @@ public class TopicService {
         }
     }
 
-    private TopicResponseDto toTopicResponseDto(Topic topic) {
-        TopicResponseDto dto = new TopicResponseDto();
-        dto.setId(topic.getId());
-        dto.setTitle(topic.getTitle());
-        dto.setDescription(topic.getDescription());
-        return dto;
-    }
 
     private TopicsResponseDto toTopicsResponseDto(List<Topic> topics) {
         List<TopicResponseDto> topicDtos = topics.stream()
-                .map(this::toTopicResponseDto)
+                .map(topic -> modelMapper.map(topic, TopicResponseDto.class))
                 .collect(Collectors.toList());
 
         TopicsResponseDto response = new TopicsResponseDto();
@@ -84,13 +80,13 @@ public class TopicService {
 
     public TopicResponseDto getTopicByIdDto(Integer id) {
         return topicRepository.findById(id)
-                .map(this::toTopicResponseDto)
+                .map(topic -> modelMapper.map(topic, TopicResponseDto.class))
                 .orElse(null);
     }
 
     public TopicResponseDto createTopicDto(Topic topic) {
         Topic savedTopic = topicRepository.save(topic);
-        return toTopicResponseDto(savedTopic);
+        return modelMapper.map(savedTopic, TopicResponseDto.class);
     }
 
     public TopicResponseDto updateTopicDto(Integer id, Topic topicDetails) {
@@ -99,7 +95,7 @@ public class TopicService {
                     topic.setTitle(topicDetails.getTitle());
                     topic.setDescription(topicDetails.getDescription());
                     Topic updatedTopic = topicRepository.save(topic);
-                    return toTopicResponseDto(updatedTopic);
+                    return modelMapper.map(updatedTopic, TopicResponseDto.class);
                 })
                 .orElse(null);
     }
