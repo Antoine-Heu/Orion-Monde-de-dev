@@ -1,0 +1,30 @@
+.auth-header {
+  background-color: white;
+  border-bottom: 1px solid black;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.auth-header-content {
+  width: 100%;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.auth-header-logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .auth-header-content {
+    padding: 0 0.5rem;
+  }
+
+  .auth-header-logo {
+    height: 50px;
+  }
+}

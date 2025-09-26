@@ -1,1 +1,12 @@
-<router-outlet></router-outlet>
+<div class="app-container">
+  <header *ngIf="authService.isLoggedIn$ | async" class="header">
+    <div class="header-content">
+      <h1>MDD</h1>
+      <button mat-button (click)="logout()">Déconnexion</button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

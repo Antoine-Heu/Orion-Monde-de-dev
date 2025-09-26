@@ -1,0 +1,50 @@
+<div class="login-page">
+  <app-auth-header></app-auth-header>
+
+  <div class="login-container">
+    <div class="back-arrow" (click)="goBack()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15,18 9,12 15,6"></polyline>
+      </svg>
+    </div>
+
+    <h1 class="login-title">Se connecter</h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label class="form-label">Email ou nom d'utilisateur</label>
+        <input
+          class="form-input"
+          formControlName="identifier"
+          type="text"
+          placeholder="Entrez votre email ou nom d'utilisateur">
+        <div class="error-message" *ngIf="loginForm.get('identifier')?.hasError('required') && loginForm.get('identifier')?.touched">
+          Ce champ est requis
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input
+          class="form-input"
+          formControlName="password"
+          type="password"
+          placeholder="Entrez votre mot de passe">
+        <div class="error-message" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+          Ce champ est requis
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid || isLoading"
+        class="submit-button">
+        {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+  </div>
+</div>
