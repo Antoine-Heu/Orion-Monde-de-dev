@@ -1,16 +1,14 @@
-<div class="register-page">
+<div class="auth-page">
   <app-auth-header></app-auth-header>
 
-  <div class="register-container">
-    <div class="back-arrow" (click)="goBack()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15,18 9,12 15,6"></polyline>
-      </svg>
-    </div>
+  <div class="back-arrow" (click)="goBack()">
+    <mat-icon>keyboard_backspace</mat-icon>
+  </div>
 
-    <h1 class="register-title">S'inscrire</h1>
+  <div class="auth-container">
+    <h1 class="auth-title">Inscription</h1>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
       <div class="form-group">
         <label class="form-label">Nom d'utilisateur</label>
         <input
@@ -60,12 +58,14 @@
         {{ errorMessage }}
       </div>
 
-      <button
-        type="submit"
-        [disabled]="registerForm.invalid || isLoading"
-        class="submit-button">
-        {{ isLoading ? 'Inscription...' : "S'inscrire" }}
-      </button>
+      <div class="auth-button">
+        <button
+          type="submit"
+          [disabled]="registerForm.invalid || isLoading"
+          class="submit-button">
+          {{ isLoading ? 'Inscription...' : "S'inscrire" }}
+        </button>
+      </div>
     </form>
   </div>
 </div>

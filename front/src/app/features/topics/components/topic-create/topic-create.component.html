@@ -1,0 +1,45 @@
+<div class="create-topic-container">
+  <div class="create-topic-content">
+    <h1>Créer un thème</h1>
+
+    <form [formGroup]="topicForm" (ngSubmit)="onSubmit()" class="topic-form">
+      <div class="form-group">
+        <label class="form-label">Titre</label>
+        <input
+          class="form-input"
+          formControlName="title"
+          type="text"
+          placeholder="Entrez le titre du thème">
+        <div class="error-message" *ngIf="topicForm.get('title')?.hasError('required') && topicForm.get('title')?.touched">
+          Le titre est requis
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea
+          class="form-textarea"
+          formControlName="description"
+          rows="8"
+          placeholder="Entrez la description du thème"></textarea>
+        <div class="error-message" *ngIf="topicForm.get('description')?.hasError('required') && topicForm.get('description')?.touched">
+          La description est requise
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Annuler</button>
+        <button
+          type="submit"
+          [disabled]="topicForm.invalid || isLoading"
+          class="submit-btn">
+          {{ isLoading ? 'Création...' : 'Créer' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

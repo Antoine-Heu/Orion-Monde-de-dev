@@ -1,0 +1,28 @@
+<div class="post-detail-container" *ngIf="post$ | async as post">
+  <div class="post-header">
+    <div class="back-btn" (click)="goBack()">
+      <mat-icon>keyboard_backspace</mat-icon>
+    </div>
+  </div>
+  
+  <div class="post-content-wrapper">
+    <h1 class="post-title">{{ post.title }}</h1>
+    <div class="post-main">
+
+      <div class="post-meta">
+        <span class="post-date">Date: {{ post.createdAt | date: 'dd/MM/yyyy' }}</span>
+        <span class="post-author">Auteur: {{ post.authorName }}</span>
+        <span class="post-topic">Thème: {{ post.topicTitle }}</span>
+      </div>
+
+      <div class="post-content">
+        <p>{{ post.content }}</p>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <h4>Commentaires</h4>
+      <!-- Section commentaires à implémenter -->
+    </div>
+  </div>
+</div>

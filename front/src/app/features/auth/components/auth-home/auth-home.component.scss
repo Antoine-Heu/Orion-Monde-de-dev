@@ -10,8 +10,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3rem;
-  padding: 2rem;
+  gap: 40px;
 }
 
 .logo-container {
@@ -21,7 +20,7 @@
 }
 
 .logo {
-  max-width: 500px;
+  max-width: 700px;
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -30,20 +29,26 @@
 .buttons-container {
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: 80px;
   width: 100%;
   justify-content: center;
 }
 
 .auth-button {
   padding: 12px 32px;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
   background-color: white;
-  color: black;
+  color: rgb(0, 0, 0);
   border: 2px solid black;
   border-radius: 12px;
-  min-width: 150px;
+  min-width: 200px;
+
+  &:hover {
+    color: rgba(0, 0, 0, 0.7);
+    border-color: rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+  }
 }
 
 @media (max-width: 768px) {

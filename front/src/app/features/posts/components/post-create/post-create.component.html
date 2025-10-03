@@ -1,0 +1,58 @@
+<div class="create-post-container">
+  <div class="create-post-content">
+    <h1>Créer un nouvel article</h1>
+
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="post-form">
+      <div class="form-group">
+        <label class="form-label">Titre</label>
+        <input
+          class="form-input"
+          formControlName="title"
+          type="text"
+          placeholder="Entrez le titre de l'article">
+        <div class="error-message" *ngIf="postForm.get('title')?.hasError('required') && postForm.get('title')?.touched">
+          Le titre est requis
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Thème</label>
+        <select class="form-input" formControlName="topicId">
+          <option value="">Sélectionnez un thème</option>
+          <option *ngFor="let topic of topics$ | async" [value]="topic.id">
+            {{ topic.title }}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="postForm.get('topicId')?.hasError('required') && postForm.get('topicId')?.touched">
+          Le thème est requis
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Contenu</label>
+        <textarea
+          class="form-textarea"
+          formControlName="content"
+          rows="8"
+          placeholder="Entrez le contenu de l'article"></textarea>
+        <div class="error-message" *ngIf="postForm.get('content')?.hasError('required') && postForm.get('content')?.touched">
+          Le contenu est requis
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Annuler</button>
+        <button
+          type="submit"
+          [disabled]="postForm.invalid || isLoading"
+          class="submit-btn">
+          {{ isLoading ? 'Création...' : 'Créer' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

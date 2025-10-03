@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../services/auth.service';
+import { AuthService } from '../../../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['../auth-form.component.scss']
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(this.loginForm.value).subscribe({
         next: () => {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/posts']);
         },
         error: (error) => {
           this.errorMessage = 'Identifiant ou mot de passe incorrect';

@@ -10,13 +10,29 @@
   padding: 0 1rem;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
 .auth-header-logo {
   height: 60px;
   width: auto;
   object-fit: contain;
+}
+
+.logout-btn {
+  padding: 0.5rem 1rem;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
 }
 
 @media (max-width: 768px) {
@@ -26,5 +42,10 @@
 
   .auth-header-logo {
     height: 50px;
+  }
+
+  .logout-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
   }
 }

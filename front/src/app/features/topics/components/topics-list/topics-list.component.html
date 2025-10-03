@@ -1,0 +1,26 @@
+<div class="topics-container">
+  <div class="topics-header">
+    <h1>Thèmes</h1>
+    <button class="create-btn" (click)="navigateToCreate()">Créer un thème</button>
+  </div>
+
+  <div class="topics-grid" *ngIf="topicsWithSubscription$ | async as topics">
+    <div class="topic-card" *ngFor="let topic of topics">
+      <div class="topic-header">
+        <h3 class="topic-title">{{ topic.title }}</h3>
+      </div>
+      <div class="topic-description">
+        <p>{{ topic.description }}</p>
+      </div>
+      <div class="topic-actions">
+        <button
+          class="subscribe-button"
+          [class.subscribed]="topic.isSubscribed"
+          [disabled]="isLoading[topic.id]"
+          (click)="toggleSubscription(topic)">
+          {{ topic.isSubscribed ? 'Déjà abonné' : 'S\'abonner' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
