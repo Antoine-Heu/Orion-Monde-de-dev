@@ -41,32 +41,24 @@ export class TopicsListComponent implements OnInit {
     );
   }
 
-  toggleSubscription(topic: TopicWithSubscription): void {
+  subscribe(topic: TopicWithSubscription): void {
+    // Ne rien faire si déjà abonné
+    if (topic.isSubscribed) {
+      return;
+    }
+
     this.isLoading[topic.id] = true;
 
-    if (topic.isSubscribed) {
-      this.subscriptionService.unsubscribe(topic.id).subscribe({
-        next: () => {
-          this.subscriptionService.loadUserSubscriptions();
-          this.isLoading[topic.id] = false;
-        },
-        error: (err) => {
-          console.error('Erreur lors du désabonnement', err);
-          this.isLoading[topic.id] = false;
-        }
-      });
-    } else {
-      this.subscriptionService.subscribe(topic.id).subscribe({
-        next: () => {
-          this.subscriptionService.loadUserSubscriptions();
-          this.isLoading[topic.id] = false;
-        },
-        error: (err) => {
-          console.error('Erreur lors de l\'abonnement', err);
-          this.isLoading[topic.id] = false;
-        }
-      });
-    }
+    this.subscriptionService.subscribe(topic.id).subscribe({
+      next: () => {
+        this.subscriptionService.loadUserSubscriptions();
+        this.isLoading[topic.id] = false;
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'abonnement', err);
+        this.isLoading[topic.id] = false;
+      }
+    });
   }
 
   navigateToCreate(): void {

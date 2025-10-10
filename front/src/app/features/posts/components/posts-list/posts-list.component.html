@@ -1,6 +1,23 @@
 <div class="posts-container">
   <div class="posts-header">
     <button class="create-btn" (click)="navigateToCreate()">Créer un article</button>
+    <div class="sort-container">
+      <span class="sort-trigger" [matMenuTriggerFor]="sortMenu">
+        Trier par
+        <mat-icon>arrow_drop_down</mat-icon>
+      </span>
+      <mat-menu #sortMenu="matMenu">
+        <button mat-menu-item (click)="setSortOption('date-desc', 'Date (plus récent)')">
+          Date (plus récent)
+        </button>
+        <button mat-menu-item (click)="setSortOption('date-asc', 'Date (plus ancien)')">
+          Date (plus ancien)
+        </button>
+        <button mat-menu-item (click)="setSortOption('topic-asc', 'Thème (A-Z)')">
+          Thème (A-Z)
+        </button>
+      </mat-menu>
+    </div>
   </div>
 
   <div class="posts-grid" *ngIf="posts$ | async as posts">

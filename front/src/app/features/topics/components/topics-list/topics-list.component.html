@@ -1,6 +1,5 @@
 <div class="topics-container">
   <div class="topics-header">
-    <h1>Thèmes</h1>
     <button class="create-btn" (click)="navigateToCreate()">Créer un thème</button>
   </div>
 
@@ -16,8 +15,8 @@
         <button
           class="subscribe-button"
           [class.subscribed]="topic.isSubscribed"
-          [disabled]="isLoading[topic.id]"
-          (click)="toggleSubscription(topic)">
+          [disabled]="isLoading[topic.id] || topic.isSubscribed"
+          (click)="subscribe(topic)">
           {{ topic.isSubscribed ? 'Déjà abonné' : 'S\'abonner' }}
         </button>
       </div>

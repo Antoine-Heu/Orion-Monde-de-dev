@@ -17,6 +17,31 @@
   }
 }
 
+.sort-container {
+  display: flex;
+  align-items: center;
+}
+
+.sort-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #000;
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
 .create-btn {
   padding: 0.75rem 1.5rem;
   background-color: rgba(141, 0, 234, 1);;
@@ -83,6 +108,14 @@
     margin: 0;
     color: #444;
     line-height: 1.6;
+
+    // Limiter à 5 lignes avec ellipsis
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

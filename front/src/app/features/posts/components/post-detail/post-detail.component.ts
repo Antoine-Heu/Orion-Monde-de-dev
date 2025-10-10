@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Post } from '../../../../interfaces/post';
+import { Comment } from '../../../../interfaces/comment.interface';
 import { PostService } from '../../../../services/post.service';
-
+import { CommentService } from '../../../../services/comment.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -12,16 +14,60 @@ import { PostService } from '../../../../services/post.service';
 })
 export class PostDetailComponent implements OnInit {
   post$!: Observable<Post>;
+  comments: Comment[] = [];
+  commentForm: FormGroup;
+  isSubmitting = false;
+  postId!: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private postService: PostService
-  ) { }
+    private postService: PostService,
+    private commentService: CommentService,
+    private fb: FormBuilder
+  ) {
+    this.commentForm = this.fb.group({
+      content: ['', [Validators.required, Validators.minLength(1)]]
+    });
+  }
 
   ngOnInit(): void {
-    const postId = Number(this.route.snapshot.paramMap.get('id'));
-    this.post$ = this.postService.getPostById(postId);
+    this.postId = Number(this.route.snapshot.paramMap.get('id'));
+    this.post$ = this.postService.getPostById(this.postId);
+    this.loadComments();
+  }
+
+  loadComments(): void {
+    this.commentService.getCommentsByPostId(this.postId).subscribe({
+      next: (response) => {
+        this.comments = response.comments;
+      },
+      error: (error) => {
+        console.error('Error loading comments:', error);
+      }
+    });
+  }
+
+  onSubmitComment(): void {
+    if (this.commentForm.valid && !this.isSubmitting) {
+      this.isSubmitting = true;
+      const commentData = {
+        content: this.commentForm.value.content,
+        postId: this.postId
+      };
+
+      this.commentService.createComment(commentData).subscribe({
+        next: (newComment) => {
+          this.comments.push(newComment);
+          this.commentForm.reset();
+          this.isSubmitting = false;
+        },
+        error: (error) => {
+          console.error('Error creating comment:', error);
+          this.isSubmitting = false;
+        }
+      });
+    }
   }
 
   goBack(): void {

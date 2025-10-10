@@ -7,6 +7,8 @@ import { PostsListComponent } from './components/posts-list/posts-list.component
 import { PostCreateComponent } from './components/post-create/post-create.component';
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     PostsRoutingModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule,
+    MatButtonModule
   ]
 })
 export class PostsModule { }

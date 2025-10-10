@@ -1,0 +1,96 @@
+<div class="profile-page">
+  <div class="profile-container">
+    <h1 class="profile-title">Profil utilisateur</h1>
+
+    <!-- Formulaire de profil -->
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+      <div class="form-group">
+        <label class="form-label">Nom d'utilisateur</label>
+        <input
+          class="form-input"
+          formControlName="username"
+          type="text"
+          placeholder="Entrez votre nom d'utilisateur">
+        <div class="error-message" *ngIf="profileForm.get('username')?.hasError('required') && profileForm.get('username')?.touched">
+          Ce champ est requis
+        </div>
+        <div class="error-message" *ngIf="profileForm.get('username')?.hasError('minlength') && profileForm.get('username')?.touched">
+          Minimum 3 caractères
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Adresse e-mail</label>
+        <input
+          class="form-input"
+          formControlName="email"
+          type="email"
+          placeholder="Entrez votre adresse e-mail">
+        <div class="error-message" *ngIf="profileForm.get('email')?.hasError('required') && profileForm.get('email')?.touched">
+          Ce champ est requis
+        </div>
+        <div class="error-message" *ngIf="profileForm.get('email')?.hasError('email') && profileForm.get('email')?.touched">
+          Email invalide
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input
+          class="form-input"
+          formControlName="password"
+          type="password"
+          (focus)="onPasswordFocus()"
+          placeholder="Mot de passe">
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="profile-button">
+        <button
+          type="submit"
+          [disabled]="profileForm.invalid || isSaving"
+          class="save-button">
+          {{ isSaving ? 'Sauvegarde...' : 'Sauvegarder' }}
+        </button>
+      </div>
+    </form>
+
+    <!-- Séparation -->
+    <div class="separator"></div>
+
+    <!-- Section Abonnements -->
+    <div class="subscriptions-section">
+      <h2 class="subscriptions-title">Abonnements</h2>
+
+      <div class="subscriptions-grid" *ngIf="userDetail && userDetail.subscribedTopics.length > 0">
+        <div class="topic-card" *ngFor="let topic of userDetail.subscribedTopics">
+          <div class="topic-header">
+            <h3 class="topic-title">{{ topic.title }}</h3>
+          </div>
+          <div class="topic-description">
+            <p>{{ topic.description }}</p>
+          </div>
+          <div class="topic-actions">
+            <button
+              class="unsubscribe-button"
+              [disabled]="unsubscribingTopicId === topic.id"
+              (click)="unsubscribeFromTopic(topic)">
+              {{ unsubscribingTopicId === topic.id ? 'Désabonnement...' : 'Se désabonner' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-subscriptions" *ngIf="userDetail && userDetail.subscribedTopics.length === 0">
+        Vous n'êtes abonné à aucun thème pour le moment.
+      </div>
+    </div>
+  </div>
+</div>

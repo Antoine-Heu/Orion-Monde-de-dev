@@ -1,0 +1,17 @@
+<header class="header" *ngIf="!isAuthHomePage">
+  <div class="header-content">
+    <!-- Logo -->
+    <img src="assets/logo_p6.png" alt="Logo" class="header-logo">
+
+    <!-- Navigation pour utilisateurs connectés -->
+    <nav class="header-nav" *ngIf="isLoggedIn$ | async">
+      <a class="logout-link" (click)="logout()">Se déconnecter</a>
+      <a class="nav-link" routerLink="/posts" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: false}">Articles</a>
+      <a class="nav-link" routerLink="/topics" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: false}">Thèmes</a>
+      <div class="avatar" (click)="navigateToProfile()"></div>
+    </nav>
+
+    <!-- Bouton déconnexion uniquement pour pages login/register -->
+    <button *ngIf="(isLoggedIn$ | async) && isAuthHomePage" class="logout-btn" (click)="logout()">Se déconnecter</button>
+  </div>
+</header>

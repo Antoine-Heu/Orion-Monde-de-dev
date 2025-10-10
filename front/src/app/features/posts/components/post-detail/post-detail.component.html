@@ -4,7 +4,7 @@
       <mat-icon>keyboard_backspace</mat-icon>
     </div>
   </div>
-  
+
   <div class="post-content-wrapper">
     <h1 class="post-title">{{ post.title }}</h1>
     <div class="post-main">
@@ -21,8 +21,45 @@
     </div>
 
     <div class="comments-section">
-      <h4>Commentaires</h4>
-      <!-- Section commentaires à implémenter -->
+      <h2 class="comments-title">Commentaires</h2>
+
+      <!-- Formulaire d'ajout de commentaire -->
+      <div class="comment-form-container">
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="comment-form">
+          <textarea
+            formControlName="content"
+            placeholder="Ajouter un commentaire..."
+            rows="3"
+            class="comment-input"
+          ></textarea>
+          <div class="form-actions">
+            <button
+              type="submit"
+              [disabled]="commentForm.invalid || isSubmitting"
+              class="submit-comment-btn"
+            >
+              {{ isSubmitting ? 'Envoi...' : 'Envoyer' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Liste des commentaires -->
+      <div class="comments-list">
+        <div *ngIf="comments.length === 0" class="no-comments">
+          Aucun commentaire pour le moment. Soyez le premier à commenter !
+        </div>
+
+        <div *ngFor="let comment of comments" class="comment-item">
+          <div class="comment-header">
+            <div class="comment-avatar"></div>
+            <span class="comment-author">{{ comment.authorName }}</span>
+          </div>
+          <div class="comment-content">
+            {{ comment.content }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
