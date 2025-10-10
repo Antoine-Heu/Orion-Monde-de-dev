@@ -31,16 +31,4 @@ export class HeaderComponent {
     this.authService.logout();
     this.router.navigate(['/auth']);
   }
-
-  navigateToArticles(): void {
-    this.router.navigate(['/posts']);
-  }
-
-  navigateToTopics(): void {
-    this.router.navigate(['/topics']);
-  }
-
-  navigateToProfile(): void {
-    this.router.navigate(['/profile']);
-  }
 }

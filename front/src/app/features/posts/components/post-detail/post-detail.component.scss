@@ -1,19 +1,26 @@
-.post-header {
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items:flex-start;
-}
-
 .post-detail-container {
     display: flex;
+    flex-direction: column;
     padding: 2rem;
+    width: 100%;
+    overflow-x: hidden;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+.title-section {
+    display: flex;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
 .back-btn {
-    padding-top: 0.5rem;
     cursor: pointer;
+    flex-shrink: 0;
+    padding-top: 0.5rem;
 
     mat-icon {
         font-size: 48px;
@@ -41,6 +48,11 @@
     flex-wrap: wrap;
 }
 
+.post-content {
+  font-size: 16px;
+  font-weight: 300;
+}
+
 h4 {
     margin: 0;
     font-weight: 400;
@@ -50,7 +62,8 @@ h4 {
 
 .post-content-wrapper {
     padding: 1rem;
-    max-width: 800px;
+    width: 100%;
+    max-width: 900px;
     margin: 0 auto;
 
     h1 {
@@ -64,8 +77,8 @@ h4 {
 
 // Section commentaires
 .comments-section {
-  margin-top: 3rem;
-  padding-top: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 8rem; // Espace pour le formulaire fixe
   border-top: 2px solid #e0e0e0;
 }
 
@@ -76,33 +89,47 @@ h4 {
   margin-bottom: 2rem;
 }
 
-// Formulaire de commentaire
+// Formulaire de commentaire fixe en bas
+.comment-form-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  z-index: 1000;
+  overflow-x: hidden;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
 .comment-form-container {
-  margin-bottom: 2rem;
-  background-color: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 8px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
 }
 
 .comment-form {
   display: flex;
-  flex-direction: column;
   gap: 1rem;
+  align-items: center;
 }
 
 .comment-input {
-  width: 100%;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid;
+
+  border-radius: 16px;
+  font-size: 20px;
   font-family: inherit;
-  resize: vertical;
+  min-height: 100px;
+  resize: none;
   transition: border-color 0.2s;
 
   &:focus {
     outline: none;
-    border-color: #007bff;
+    border: 2px solid;
+    border-color: rgba(141, 0, 234, 1);
   }
 
   &::placeholder {
@@ -110,29 +137,40 @@ h4 {
   }
 }
 
-.form-actions {
+.submit-comment-icon {
   display: flex;
-  justify-content: flex-end;
-}
-
-.submit-comment-btn {
-  padding: 0.75rem 2rem;
-  background-color: #007bff;
-  color: white;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: transparent;
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: rgba(141, 0, 234, 1);
+  }
 
   &:hover:not(:disabled) {
-    background-color: #0056b3;
+    transform: scale(1.1);
+
+    mat-icon {
+      color: rgba(141, 0, 234, 0.8);
+    }
   }
 
   &:disabled {
-    background-color: #ccc;
     cursor: not-allowed;
+    opacity: 0.4;
+
+    mat-icon {
+      color: #ccc;
+    }
   }
 }
 
@@ -140,33 +178,35 @@ h4 {
 .comments-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
 .no-comments {
   text-align: center;
   padding: 2rem;
-  color: #666;
+  font-size: 16px;
+  font-weight: 200;
   font-style: italic;
 }
 
 .comment-item {
   background-color: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  transition: box-shadow 0.2s;
+  padding: 0.5rem 0;
+}
 
-  &:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
+.comment-section {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: flex-start;
 }
 
 .comment-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  flex-shrink: 0;
+  width: 150px;
+  min-width: 150px;
 }
 
 .comment-avatar {
@@ -182,9 +222,16 @@ h4 {
   font-weight: 600;
   color: #333;
   font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .comment-content {
+  flex: 1;
+  background-color: rgb(245, 245, 245);
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
   color: #555;
   line-height: 1.6;
   font-size: 14px;

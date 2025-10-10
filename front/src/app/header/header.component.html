@@ -8,7 +8,9 @@
       <a class="logout-link" (click)="logout()">Se déconnecter</a>
       <a class="nav-link" routerLink="/posts" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: false}">Articles</a>
       <a class="nav-link" routerLink="/topics" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: false}">Thèmes</a>
-      <div class="avatar" (click)="navigateToProfile()"></div>
+      <a class="avatar-link" routerLink="/profile" routerLinkActive="active-avatar" [routerLinkActiveOptions]="{exact: false}">
+        <mat-icon class="avatar-icon">account_circle</mat-icon>
+      </a>
     </nav>
 
     <!-- Bouton déconnexion uniquement pour pages login/register -->

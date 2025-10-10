@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { SubscriptionService } from '../../../services/subscription.service';
+import { AuthService } from '../../../services/auth.service';
 import { UserDetail } from '../../../interfaces/user.interface';
 import { Topic } from '../../../interfaces/topic';
 
@@ -24,6 +26,8 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private subscriptionService: SubscriptionService,
+    private authService: AuthService,
+    private router: Router,
     private dialog: MatDialog
   ) {
     this.profileForm = this.fb.group({
@@ -63,6 +67,9 @@ export class ProfileComponent implements OnInit {
       this.errorMessage = '';
       this.successMessage = '';
 
+      // Sauvegarder l'email actuel pour vérifier s'il a changé
+      const currentEmail = this.userDetail?.email;
+
       const updateData: any = {
         username: this.profileForm.value.username,
         email: this.profileForm.value.email
@@ -75,10 +82,21 @@ export class ProfileComponent implements OnInit {
 
       this.userService.updateCurrentUser(updateData).subscribe({
         next: (user) => {
-          this.successMessage = 'Profil mis à jour avec succès';
-          this.isSaving = false;
-          // Recharger le profil
-          this.loadUserProfile();
+          // Vérifier si l'email a changé
+          if (currentEmail && user.email !== currentEmail) {
+            // L'email a changé, déconnecter et rediriger
+            this.successMessage = 'Profil mis à jour. Vous allez être déconnecté...';
+            setTimeout(() => {
+              this.authService.logout();
+              this.router.navigate(['/auth']);
+            }, 1500);
+          } else {
+            // Pas de changement d'email, simple mise à jour
+            this.successMessage = 'Profil mis à jour avec succès';
+            this.isSaving = false;
+            // Recharger le profil
+            this.loadUserProfile();
+          }
         },
         error: (error) => {
           console.error('Error updating profile:', error);

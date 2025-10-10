@@ -59,4 +59,8 @@ export class PostCreateComponent implements OnInit {
   cancel(): void {
     this.router.navigate(['/posts']);
   }
+
+  goBack(): void {
+    this.router.navigate(['/posts']);
+  }
 }

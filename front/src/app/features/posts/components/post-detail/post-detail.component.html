@@ -1,12 +1,14 @@
 <div class="post-detail-container" *ngIf="post$ | async as post">
-  <div class="post-header">
+  <div class="title-section">
     <div class="back-btn" (click)="goBack()">
       <mat-icon>keyboard_backspace</mat-icon>
+    </div>
+    <div class="post-content-wrapper">
+      <h1 class="post-title">{{ post.title }}</h1>
     </div>
   </div>
 
   <div class="post-content-wrapper">
-    <h1 class="post-title">{{ post.title }}</h1>
     <div class="post-main">
 
       <div class="post-meta">
@@ -23,27 +25,6 @@
     <div class="comments-section">
       <h2 class="comments-title">Commentaires</h2>
 
-      <!-- Formulaire d'ajout de commentaire -->
-      <div class="comment-form-container">
-        <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="comment-form">
-          <textarea
-            formControlName="content"
-            placeholder="Ajouter un commentaire..."
-            rows="3"
-            class="comment-input"
-          ></textarea>
-          <div class="form-actions">
-            <button
-              type="submit"
-              [disabled]="commentForm.invalid || isSubmitting"
-              class="submit-comment-btn"
-            >
-              {{ isSubmitting ? 'Envoi...' : 'Envoyer' }}
-            </button>
-          </div>
-        </form>
-      </div>
-
       <!-- Liste des commentaires -->
       <div class="comments-list">
         <div *ngIf="comments.length === 0" class="no-comments">
@@ -51,15 +32,37 @@
         </div>
 
         <div *ngFor="let comment of comments" class="comment-item">
-          <div class="comment-header">
-            <div class="comment-avatar"></div>
-            <span class="comment-author">{{ comment.authorName }}</span>
-          </div>
-          <div class="comment-content">
-            {{ comment.content }}
+          <div class="comment-section">
+            <div class="comment-header">
+              <span class="comment-author">{{ comment.authorName }}</span>
+            </div>
+            <div class="comment-content">
+              {{ comment.content }}
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Formulaire d'ajout de commentaire fixe en bas -->
+<div class="comment-form-fixed">
+  <div class="comment-form-container">
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="comment-form">
+      <textarea
+        formControlName="content"
+        placeholder="Écrivez ici votre commentaire"
+        rows="2"
+        class="comment-input"
+      ></textarea>
+      <button
+        type="submit"
+        [disabled]="commentForm.invalid || isSubmitting"
+        class="submit-comment-icon"
+      >
+        <mat-icon>send</mat-icon>
+      </button>
+    </form>
   </div>
 </div>
