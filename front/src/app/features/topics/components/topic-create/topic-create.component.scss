@@ -1,23 +1,54 @@
 .create-topic-container {
-  min-height: 100vh;
-  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
   padding: 2rem;
+  width: 100%;
+  overflow-x: hidden;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+.title-section {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.back-btn {
+  cursor: pointer;
+  flex-shrink: 0;
+  padding-top: 0.5rem;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.topic-content-wrapper {
+  padding: 1rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+
+  .topic-title {
+    margin: 0 0 2rem 7rem;
+    font-size: 32px;
+    font-weight: 800;
+    color: #333;
+    text-align: start;
+  }
 }
 
 .create-topic-content {
-  max-width: 800px;
+  padding: 1rem;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
-  background: white;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-  h1 {
-    margin: 0 0 2rem 0;
-    font-size: 2rem;
-    color: #333;
-    text-align: center;
-  }
 }
 
 .topic-form {
@@ -30,6 +61,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding: 0 7rem;
 }
 
 .form-label {
@@ -41,7 +73,7 @@
 .form-input,
 .form-textarea {
   padding: 16px;
-  border: 1px solid black;
+  border: 2px solid rgba(141, 0, 234, 1);
   border-radius: 8px;
   font-size: 16px;
   background-color: white;
@@ -50,7 +82,7 @@
 
   &:focus {
     outline: none;
-    border-color: #666;
+    border-color: rgba(141, 0, 234, 0.8);
   }
 
   &::placeholder {
@@ -76,8 +108,7 @@
   margin-top: 1rem;
 }
 
-.submit-btn,
-.cancel-btn {
+.submit-btn {
   padding: 14px 24px;
   font-size: 20px;
   font-weight: 700;
@@ -99,15 +130,6 @@
   &:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-  }
-}
-
-.cancel-btn {
-  background-color: #666;
-  color: white;
-
-  &:hover {
-    background-color: #555;
   }
 }
 

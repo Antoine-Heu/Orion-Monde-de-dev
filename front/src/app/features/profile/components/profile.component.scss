@@ -189,22 +189,66 @@
 
 @media (max-width: 768px) {
   .profile-container {
-    padding: 0 0.5rem;
+    padding: 0 0rem;
   }
 
   .profile-title {
     font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .profile-form {
+    padding: 0;
+    gap: 0.75rem;
   }
 
   .form-group {
-    padding: 0 1rem;
+    padding: 0 !important;
+    margin-bottom: 0;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .subscriptions-grid {
-    grid-template-columns: 1fr;
+  .form-input {
+    width: 90%;
+    height: 5px;
+  }
+
+  .profile-button {
+    margin-top: 0.5rem;
+  }
+
+  .separator {
+    width: 90%;
+    margin: 1.5rem auto;
+  }
+
+  .subscriptions-section {
+    width: 90%;
+    margin: 0 auto;
   }
 
   .subscriptions-title {
     font-size: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .subscriptions-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .save-button {
+    padding: 10px 10px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .unsubscribe-button {
+    padding: 10px 10px;
+    font-size: 16px;
+    font-weight: 700;
   }
 }

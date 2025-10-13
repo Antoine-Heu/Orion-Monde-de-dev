@@ -22,7 +22,8 @@ export class PostService {
   loadUserFeed(): void {
     this.http.get<PostsResponse>(`${this.API_URL}/feed`).subscribe({
       next: (response) => {
-        this.postsSubject.next(response.posts);
+        // Gérer le cas où response.posts est null
+        this.postsSubject.next(response.posts || []);
       },
       error: (err) => {
         console.error('Erreur lors du chargement des articles', err);

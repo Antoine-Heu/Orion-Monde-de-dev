@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TopicService } from '../../../../services/topic.service';
 import { SubscriptionService } from '../../../../services/subscription.service';
 import { Topic } from '../../../../interfaces/topic';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, combineLatest, map, Subject, takeUntil } from 'rxjs';
 
 export interface TopicWithSubscription extends Topic {
   isSubscribed: boolean;
@@ -14,9 +14,10 @@ export interface TopicWithSubscription extends Topic {
   templateUrl: './topics-list.component.html',
   styleUrls: ['./topics-list.component.scss']
 })
-export class TopicsListComponent implements OnInit {
+export class TopicsListComponent implements OnInit, OnDestroy {
   topicsWithSubscription$!: Observable<TopicWithSubscription[]>;
   isLoading: { [key: number]: boolean } = {};
+  private destroy$ = new Subject<void>();
 
   constructor(
     private topicService: TopicService,
@@ -41,6 +42,11 @@ export class TopicsListComponent implements OnInit {
     );
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   subscribe(topic: TopicWithSubscription): void {
     // Ne rien faire si déjà abonné
     if (topic.isSubscribed) {
@@ -49,16 +55,18 @@ export class TopicsListComponent implements OnInit {
 
     this.isLoading[topic.id] = true;
 
-    this.subscriptionService.subscribe(topic.id).subscribe({
-      next: () => {
-        this.subscriptionService.loadUserSubscriptions();
-        this.isLoading[topic.id] = false;
-      },
-      error: (err) => {
-        console.error('Erreur lors de l\'abonnement', err);
-        this.isLoading[topic.id] = false;
-      }
-    });
+    this.subscriptionService.subscribe(topic.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.subscriptionService.loadUserSubscriptions();
+          this.isLoading[topic.id] = false;
+        },
+        error: (err) => {
+          console.error('Erreur lors de l\'abonnement', err);
+          this.isLoading[topic.id] = false;
+        }
+      });
   }
 
   navigateToCreate(): void {

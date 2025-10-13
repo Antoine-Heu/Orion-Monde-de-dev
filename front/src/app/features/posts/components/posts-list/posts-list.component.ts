@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostService } from '../../../../services/post.service';
+import { SubscriptionService } from '../../../../services/subscription.service';
 import { Post } from '../../../../interfaces/post';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap, switchMap, startWith } from 'rxjs/operators';
 
-type SortOption = 'date-desc' | 'date-asc' | 'topic-asc';
+type SortOption = 'date-desc' | 'date-asc' | 'post-asc';
 
 @Component({
   selector: 'app-posts-list',
@@ -19,16 +20,27 @@ export class PostsListComponent implements OnInit {
 
   constructor(
     private postService: PostService,
+    private subscriptionService: SubscriptionService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.postService.loadUserFeed();
-    this.applySorting();
+    // Charger les abonnements au démarrage
+    this.subscriptionService.loadUserSubscriptions();
+
+    // Pattern réactif : écouter les changements d'abonnements
+    // et recharger automatiquement le feed
+    this.posts$ = this.subscriptionService.subscribedTopicIds$.pipe(
+      tap(() => this.postService.loadUserFeed()),
+      switchMap(() => this.postService.posts$),
+      map(posts => this.sortPosts([...posts], this.currentSort))
+    );
   }
 
   applySorting(): void {
-    this.posts$ = this.postService.posts$.pipe(
+    // Recréer l'observable avec le nouveau tri
+    this.posts$ = this.subscriptionService.subscribedTopicIds$.pipe(
+      switchMap(() => this.postService.posts$),
       map(posts => this.sortPosts([...posts], this.currentSort))
     );
   }
@@ -43,9 +55,9 @@ export class PostsListComponent implements OnInit {
         return posts.sort((a, b) =>
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
-      case 'topic-asc':
+      case 'post-asc':
         return posts.sort((a, b) =>
-          a.topicTitle.localeCompare(b.topicTitle)
+          a.title.localeCompare(b.title)
         );
       default:
         return posts;

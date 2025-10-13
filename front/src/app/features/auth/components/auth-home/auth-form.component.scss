@@ -1,6 +1,5 @@
 .auth-page {
   min-height: 100vh;
-  background-color: #fafafa;
 }
 
 .auth-container {
@@ -28,6 +27,10 @@
   &:hover {
     color: #666;
   }
+}
+
+.logo-container-mobile {
+  display: none;
 }
 
 .auth-title {
@@ -83,6 +86,43 @@
   margin-top: 4px;
 }
 
+.password-requirements {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.requirement {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &.valid {
+    color: #4caf50;
+
+    mat-icon {
+      color: #4caf50;
+    }
+  }
+
+  &.invalid {
+    color: #d32f2f;
+
+    mat-icon {
+      color: #d32f2f;
+    }
+  }
+}
+
 .auth-button {
   display: flex;
   align-items: center;
@@ -114,11 +154,76 @@
 }
 
 @media (max-width: 768px) {
+  // Cacher le header en mobile sur les pages login/register
+  ::ng-deep app-header {
+    display: none;
+  }
+
+  .auth-page {
+    padding-top: 1rem;
+    min-height: 20vh;
+  }
+
+  .back-arrow {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    margin: 0;
+    z-index: 10;
+  }
+
+  .logo-container-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .logo-mobile {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
   .auth-container {
-    padding: 1rem;
+    max-width: 100%;
+    padding: 0 1.5rem;
+    margin: 0;
   }
 
   .auth-title {
     font-size: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+
+  .auth-form {
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .form-group {
+    padding: 0 !important;
+    margin-bottom: 0;
+    width: 100%;
+  }
+
+  .form-input {
+    width: 90%;
+  }
+
+  .auth-button {
+    margin-top: 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .submit-button {
+    width: 80%;
+    max-width: none;
   }
 }

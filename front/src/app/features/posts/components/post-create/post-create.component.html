@@ -1,12 +1,14 @@
 <div class="create-post-container">
-  <div class="post-header">
+  <div class="title-section">
     <div class="back-btn" (click)="goBack()">
       <mat-icon>keyboard_backspace</mat-icon>
+    </div>
+    <div class="post-content-wrapper">
+      <h1 class="post-title">Créer un nouvel article</h1>
     </div>
   </div>
 
   <div class="create-post-content">
-    <h1>Créer un nouvel article</h1>
 
     <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="post-form">
       <div class="form-group">
@@ -18,6 +20,9 @@
           placeholder="Entrez le titre de l'article">
         <div class="error-message" *ngIf="postForm.get('title')?.hasError('required') && postForm.get('title')?.touched">
           Le titre est requis
+        </div>
+        <div class="error-message" *ngIf="postForm.get('title')?.hasError('minlength') && postForm.get('title')?.touched">
+          Le titre doit contenir au moins 3 caractères
         </div>
       </div>
 
@@ -43,6 +48,9 @@
           placeholder="Entrez le contenu de l'article"></textarea>
         <div class="error-message" *ngIf="postForm.get('content')?.hasError('required') && postForm.get('content')?.touched">
           Le contenu est requis
+        </div>
+        <div class="error-message" *ngIf="postForm.get('content')?.hasError('minlength') && postForm.get('content')?.touched">
+          Le contenu doit contenir au moins 10 caractères
         </div>
       </div>
 

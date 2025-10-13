@@ -1,20 +1,26 @@
 .create-post-container {
+  display: flex;
+  flex-direction: column;
   padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
+  overflow-x: hidden;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
-.post-header {
-  margin-bottom: 2rem;
+.title-section {
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
   align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .back-btn {
-  padding-top: 0.5rem;
   cursor: pointer;
+  flex-shrink: 0;
+  padding-top: 0.5rem;
 
   mat-icon {
     font-size: 48px;
@@ -23,21 +29,26 @@
   }
 }
 
-.create-post-content {
-  max-width: 700px;
+.post-content-wrapper {
+  padding: 1rem;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
-  background: white;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-  h1 {
-    margin: 0 0 2rem 0;
+  .post-title {
+    margin: 0 0 2rem 7rem;
     font-size: 32px;
     font-weight: 800;
     color: #333;
-    text-align: center;
+    text-align: start;
   }
+}
+
+.create-post-content {
+  padding: 1rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .post-form {
@@ -50,6 +61,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding: 0 7rem;
 }
 
 .form-label {
@@ -96,8 +108,7 @@
   margin-top: 1rem;
 }
 
-.submit-btn,
-.cancel-btn {
+.submit-btn {
   padding: 14px 24px;
   font-size: 20px;
   font-weight: 700;

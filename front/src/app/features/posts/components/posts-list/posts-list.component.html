@@ -1,7 +1,7 @@
-<div class="posts-container">
+<div class="posts-container" *ngIf="posts$ | async as posts">
   <div class="posts-header">
     <button class="create-btn" (click)="navigateToCreate()">Créer un article</button>
-    <div class="sort-container">
+    <div *ngIf="posts.length > 1" class="sort-container">
       <span class="sort-trigger" [matMenuTriggerFor]="sortMenu">
         Trier par
         <mat-icon>arrow_drop_down</mat-icon>
@@ -13,14 +13,14 @@
         <button mat-menu-item (click)="setSortOption('date-asc', 'Date (plus ancien)')">
           Date (plus ancien)
         </button>
-        <button mat-menu-item (click)="setSortOption('topic-asc', 'Thème (A-Z)')">
-          Thème (A-Z)
+        <button mat-menu-item (click)="setSortOption('post-asc', 'Article (A-Z)')">
+          Article (A-Z)
         </button>
       </mat-menu>
     </div>
   </div>
 
-  <div class="posts-grid" *ngIf="posts$ | async as posts">
+  <div class="posts-grid">
     <div class="post-card" *ngFor="let post of posts" (click)="navigateToDetail(post.id)">
       <div class="post-header">
         <h3 class="post-title">{{ post.title }}</h3>
@@ -33,5 +33,9 @@
         <p>{{ post.content }}</p>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="posts.length === 0" class="no-posts">
+    <p>Aucun article à afficher. Abonnez-vous à des thèmes pour voir des articles !</p>
   </div>
 </div>

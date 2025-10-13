@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../../../../services/auth.service';
 
 @Component({
@@ -8,10 +10,11 @@ import { AuthService } from '../../../../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['../auth-form.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   isLoading = false;
   errorMessage = '';
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -26,20 +29,27 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
 
-      this.authService.login(this.loginForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/posts']);
-        },
-        error: (error) => {
-          this.errorMessage = 'Identifiant ou mot de passe incorrect';
-          this.isLoading = false;
-        }
-      });
+      this.authService.login(this.loginForm.value)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/posts']);
+          },
+          error: (error) => {
+            this.errorMessage = 'Identifiant ou mot de passe incorrect';
+            this.isLoading = false;
+          }
+        });
     }
   }
 

@@ -1,10 +1,17 @@
-<header class="header" *ngIf="!isAuthHomePage">
+<header class="header" *ngIf="showHeader">
   <div class="header-content">
     <!-- Logo -->
     <img src="assets/logo_p6.png" alt="Logo" class="header-logo">
 
-    <!-- Navigation pour utilisateurs connectés -->
-    <nav class="header-nav" *ngIf="isLoggedIn$ | async">
+    <!-- Bouton hamburger pour mobile -->
+    <button class="hamburger-menu" *ngIf="showHamburger" (click)="toggleMenu()" [class.open]="isMenuOpen">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+    <!-- Navigation pour utilisateurs connectés (Desktop) -->
+    <nav class="header-nav desktop-nav" *ngIf="showNav">
       <a class="logout-link" (click)="logout()">Se déconnecter</a>
       <a class="nav-link" routerLink="/posts" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: false}">Articles</a>
       <a class="nav-link" routerLink="/topics" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: false}">Thèmes</a>
@@ -13,7 +20,15 @@
       </a>
     </nav>
 
-    <!-- Bouton déconnexion uniquement pour pages login/register -->
-    <button *ngIf="(isLoggedIn$ | async) && isAuthHomePage" class="logout-btn" (click)="logout()">Se déconnecter</button>
+    <!-- Menu mobile déroulant -->
+    <nav class="mobile-menu" *ngIf="showNav && isMenuOpen">
+      <a class="mobile-menu-item logout-item" (click)="logout(); closeMenu()">Se déconnecter</a>
+      <a class="mobile-menu-item" routerLink="/posts" (click)="closeMenu()">Articles</a>
+      <a class="mobile-menu-item" routerLink="/topics" (click)="closeMenu()">Thèmes</a>
+      <a class="mobile-menu-item avatar-item" routerLink="/profile" (click)="closeMenu()">
+        <mat-icon class="mobile-avatar-icon">account_circle</mat-icon>
+        <span>Profil</span>
+      </a>
+    </nav>
   </div>
 </header>

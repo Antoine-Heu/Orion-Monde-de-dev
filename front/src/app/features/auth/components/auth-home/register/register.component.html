@@ -3,6 +3,10 @@
     <mat-icon>keyboard_backspace</mat-icon>
   </div>
 
+  <div class="logo-container-mobile">
+    <img src="assets/logo_p6.png" alt="Logo" class="logo-mobile">
+  </div>
+
   <div class="auth-container">
     <h1 class="auth-title">Inscription</h1>
 
@@ -47,8 +51,27 @@
         <div class="error-message" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
           Ce champ est requis
         </div>
-        <div class="error-message" *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched">
-          Minimum 6 caractères
+        <div class="password-requirements" *ngIf="password?.value">
+          <div class="requirement" [class.valid]="hasMinLength()" [class.invalid]="!hasMinLength()">
+            <mat-icon>{{ hasMinLength() ? 'check_circle' : 'cancel' }}</mat-icon>
+            <span>Au moins 8 caractères</span>
+          </div>
+          <div class="requirement" [class.valid]="hasUpperCase()" [class.invalid]="!hasUpperCase()">
+            <mat-icon>{{ hasUpperCase() ? 'check_circle' : 'cancel' }}</mat-icon>
+            <span>Une lettre majuscule</span>
+          </div>
+          <div class="requirement" [class.valid]="hasLowerCase()" [class.invalid]="!hasLowerCase()">
+            <mat-icon>{{ hasLowerCase() ? 'check_circle' : 'cancel' }}</mat-icon>
+            <span>Une lettre minuscule</span>
+          </div>
+          <div class="requirement" [class.valid]="hasNumber()" [class.invalid]="!hasNumber()">
+            <mat-icon>{{ hasNumber() ? 'check_circle' : 'cancel' }}</mat-icon>
+            <span>Un chiffre</span>
+          </div>
+          <div class="requirement" [class.valid]="hasSpecialChar()" [class.invalid]="!hasSpecialChar()">
+            <mat-icon>{{ hasSpecialChar() ? 'check_circle' : 'cancel' }}</mat-icon>
+            <span>Un caractère spécial (!@#$%^&*...)</span>
+          </div>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
 import { LoginRequest, RegisterRequest, TokenResponse } from '../interfaces/auth.interface';
 import { environment } from '../../environments/environment';
 
@@ -8,52 +8,62 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly TOKEN_KEY = 'token';
   private readonly API_URL = environment.production ? 'http://localhost:8080/api/auth' : 'http://localhost:8080/api/auth';
 
-  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.checkAuthStatus();
+  }
 
-  login(loginRequest: LoginRequest): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>(`${this.API_URL}/login`, loginRequest)
-      .pipe(
-        tap(response => {
-          this.setToken(response.token);
+  login(loginRequest: LoginRequest): Observable<void> {
+    return this.http.post<void>(`${this.API_URL}/login`, loginRequest, {
+      withCredentials: true
+    }).pipe(
+        tap(() => {
           this.isLoggedInSubject.next(true);
         })
       );
   }
 
-  register(registerRequest: RegisterRequest): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>(`${this.API_URL}/register`, registerRequest)
-      .pipe(
-        tap(response => {
-          this.setToken(response.token);
+  register(registerRequest: RegisterRequest): Observable<void> {
+    return this.http.post<void>(`${this.API_URL}/register`, registerRequest, {
+      withCredentials: true
+    }).pipe(
+        tap(() => {
           this.isLoggedInSubject.next(true);
         })
       );
   }
 
-  logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    this.isLoggedInSubject.next(false);
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.API_URL}/logout`, {}, {
+      withCredentials: true
+    }).pipe(
+      tap(() => {
+        this.isLoggedInSubject.next(false);
+      })
+    );
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+  checkAuth(): Observable<boolean> {
+    return this.http.get<any>(`${this.API_URL}/me`, {
+      withCredentials: true
+    }).pipe(
+      tap(() => this.isLoggedInSubject.next(true)),
+      catchError(() => {
+        this.isLoggedInSubject.next(false);
+        return of(false);
+      })
+    );
   }
 
-  private setToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
-  }
-
-  private hasToken(): boolean {
-    return !!this.getToken();
+  private checkAuthStatus(): void {
+    this.checkAuth().subscribe();
   }
 
   isLoggedIn(): boolean {
-    return this.hasToken();
+    return this.isLoggedInSubject.value;
   }
 }

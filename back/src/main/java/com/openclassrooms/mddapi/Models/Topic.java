@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,9 +19,11 @@ public class Topic {
     Integer id;
 
     @NotEmpty
+    @Size(min = 3, message = "Le titre doit contenir au moins 3 caractères")
     String title;
 
     @NotEmpty
+    @Size(min = 10, message = "La description doit contenir au moins 10 caractères")
     String description;
 
     @CreationTimestamp

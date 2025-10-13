@@ -114,11 +114,18 @@ h4 {
   align-items: center;
 }
 
-.comment-input {
+.comment-input-wrapper {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.comment-input {
+  width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid;
-
+  box-sizing: border-box;
   border-radius: 16px;
   font-size: 20px;
   font-family: inherit;
@@ -137,12 +144,20 @@ h4 {
   }
 }
 
+.error-message {
+  color: #d32f2f;
+  font-size: 14px;
+  font-weight: 400;
+  padding-left: 1rem;
+}
+
 .submit-comment-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  rotate: -45deg;
+  width: 60px;
+  height: 60px;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -150,9 +165,9 @@ h4 {
   flex-shrink: 0;
 
   mat-icon {
-    font-size: 28px;
-    width: 28px;
-    height: 28px;
+    font-size: 56px;
+    width: 56px;
+    height: 56px;
     color: rgba(141, 0, 234, 1);
   }
 
@@ -240,6 +255,24 @@ h4 {
 
 // Responsive
 @media (max-width: 768px) {
+  .post-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    font-size: 14px;
+    margin-bottom: 1rem;
+
+    .post-date,
+    .post-author {
+      // Date et Auteur sur la première ligne
+    }
+
+    .post-topic {
+      // Thème sur la deuxième ligne, prend toute la largeur
+      grid-column: 1 / -1;
+    }
+  }
+
   .comments-section {
     margin-top: 2rem;
   }

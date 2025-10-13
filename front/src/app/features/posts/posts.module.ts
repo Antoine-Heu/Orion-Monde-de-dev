@@ -8,7 +8,6 @@ import { PostCreateComponent } from './components/post-create/post-create.compon
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -22,8 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
     PostsRoutingModule,
     ReactiveFormsModule,
     MatIconModule,
-    MatMenuModule,
-    MatButtonModule
+    MatMenuModule
   ]
 })
 export class PostsModule { }

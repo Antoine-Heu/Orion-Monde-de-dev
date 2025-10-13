@@ -81,27 +81,108 @@
   }
 }
 
+// Menu hamburger (caché par défaut, visible en mobile)
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+
+  .hamburger-line {
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    transition: all 0.3s ease;
+  }
+}
+
+// Menu mobile déroulant
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 0 8px;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.mobile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 400;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f8f8f8;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.logout-item {
+    color: red;
+
+    &:hover {
+      color: #d32f2f;
+    }
+  }
+
+  &.avatar-item {
+    justify-content: center;
+  }
+}
+
+.mobile-avatar-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #999;
+}
+
 @media (max-width: 768px) {
+  .header {
+    position: relative;
+  }
+
   .header-content {
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
   }
 
   .header-logo {
     height: 50px;
   }
 
-  .header-nav {
-    gap: 1rem;
+  // Cacher la navigation desktop en mobile
+  .desktop-nav {
+    display: none !important;
   }
 
-  .nav-link {
-    font-size: 0.875rem;
+  // Afficher le bouton hamburger en mobile
+  .hamburger-menu {
+    display: flex;
   }
 
-  .avatar-icon {
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
+  // Afficher le menu mobile quand il est ouvert
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
   }
 
   .logout-btn {

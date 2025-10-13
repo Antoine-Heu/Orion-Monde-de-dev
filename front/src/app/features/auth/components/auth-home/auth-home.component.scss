@@ -52,6 +52,11 @@
 }
 
 @media (max-width: 768px) {
+  .auth-home-container {
+    align-items: flex-start;
+    padding-top: 8vh;
+  }
+
   .auth-home-content {
     gap: 2rem;
     padding: 1rem;
@@ -59,6 +64,7 @@
 
   .logo {
     max-width: 350px;
+    justify-content: flex-start;
   }
 
   .buttons-container {

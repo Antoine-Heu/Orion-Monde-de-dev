@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UserService } from '../../../services/user.service';
 import { SubscriptionService } from '../../../services/subscription.service';
 import { AuthService } from '../../../services/auth.service';
@@ -13,7 +15,7 @@ import { Topic } from '../../../interfaces/topic';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   profileForm: FormGroup;
   userDetail: UserDetail | null = null;
   isLoading = false;
@@ -21,6 +23,7 @@ export class ProfileComponent implements OnInit {
   errorMessage = '';
   successMessage = '';
   unsubscribingTopicId: number | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -41,24 +44,31 @@ export class ProfileComponent implements OnInit {
     this.loadUserProfile();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadUserProfile(): void {
     this.isLoading = true;
-    this.userService.getCurrentUserDetails().subscribe({
-      next: (userDetail) => {
-        this.userDetail = userDetail;
-        this.profileForm.patchValue({
-          username: userDetail.username,
-          email: userDetail.email,
-          password: 'Mot de passe'
-        });
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading user profile:', error);
-        this.errorMessage = 'Erreur lors du chargement du profil';
-        this.isLoading = false;
-      }
-    });
+    this.userService.getCurrentUserDetails()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (userDetail) => {
+          this.userDetail = userDetail;
+          this.profileForm.patchValue({
+            username: userDetail.username,
+            email: userDetail.email,
+            password: 'Mot de passe'
+          });
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error loading user profile:', error);
+          this.errorMessage = 'Erreur lors du chargement du profil';
+          this.isLoading = false;
+        }
+      });
   }
 
   onSubmit(): void {
@@ -80,30 +90,41 @@ export class ProfileComponent implements OnInit {
         updateData.password = this.profileForm.value.password;
       }
 
-      this.userService.updateCurrentUser(updateData).subscribe({
-        next: (user) => {
-          // Vérifier si l'email a changé
-          if (currentEmail && user.email !== currentEmail) {
-            // L'email a changé, déconnecter et rediriger
-            this.successMessage = 'Profil mis à jour. Vous allez être déconnecté...';
-            setTimeout(() => {
-              this.authService.logout();
-              this.router.navigate(['/auth']);
-            }, 1500);
-          } else {
-            // Pas de changement d'email, simple mise à jour
-            this.successMessage = 'Profil mis à jour avec succès';
+      this.userService.updateCurrentUser(updateData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (user) => {
+            // Vérifier si l'email a changé
+            if (currentEmail && user.email !== currentEmail) {
+              // L'email a changé, déconnecter et rediriger
+              this.successMessage = 'Profil mis à jour. Vous allez être déconnecté...';
+              setTimeout(() => {
+                this.authService.logout()
+                  .pipe(takeUntil(this.destroy$))
+                  .subscribe({
+                    next: () => {
+                      this.router.navigate(['/auth']);
+                    },
+                    error: (error) => {
+                      console.error('Logout error:', error);
+                      this.router.navigate(['/auth']);
+                    }
+                  });
+              }, 1500);
+            } else {
+              // Pas de changement d'email, simple mise à jour
+              this.successMessage = 'Profil mis à jour avec succès';
+              this.isSaving = false;
+              // Recharger le profil
+              this.loadUserProfile();
+            }
+          },
+          error: (error) => {
+            console.error('Error updating profile:', error);
+            this.errorMessage = 'Erreur lors de la mise à jour du profil';
             this.isSaving = false;
-            // Recharger le profil
-            this.loadUserProfile();
           }
-        },
-        error: (error) => {
-          console.error('Error updating profile:', error);
-          this.errorMessage = 'Erreur lors de la mise à jour du profil';
-          this.isSaving = false;
-        }
-      });
+        });
     }
   }
 
@@ -112,22 +133,24 @@ export class ProfileComponent implements OnInit {
 
     if (confirmed) {
       this.unsubscribingTopicId = topic.id;
-      this.subscriptionService.unsubscribe(topic.id).subscribe({
-        next: () => {
-          // Retirer le topic de la liste
-          if (this.userDetail) {
-            this.userDetail.subscribedTopics = this.userDetail.subscribedTopics.filter(
-              t => t.id !== topic.id
-            );
+      this.subscriptionService.unsubscribe(topic.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            // Retirer le topic de la liste
+            if (this.userDetail) {
+              this.userDetail.subscribedTopics = this.userDetail.subscribedTopics.filter(
+                t => t.id !== topic.id
+              );
+            }
+            this.unsubscribingTopicId = null;
+          },
+          error: (error) => {
+            console.error('Error unsubscribing:', error);
+            this.errorMessage = 'Erreur lors du désabonnement';
+            this.unsubscribingTopicId = null;
           }
-          this.unsubscribingTopicId = null;
-        },
-        error: (error) => {
-          console.error('Error unsubscribing:', error);
-          this.errorMessage = 'Erreur lors du désabonnement';
-          this.unsubscribingTopicId = null;
-        }
-      });
+        });
     }
   }
 

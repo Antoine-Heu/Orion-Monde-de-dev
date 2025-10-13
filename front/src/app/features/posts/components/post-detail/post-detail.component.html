@@ -50,12 +50,17 @@
 <div class="comment-form-fixed">
   <div class="comment-form-container">
     <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="comment-form">
-      <textarea
-        formControlName="content"
-        placeholder="Écrivez ici votre commentaire"
-        rows="2"
-        class="comment-input"
-      ></textarea>
+      <div class="comment-input-wrapper">
+        <textarea
+          formControlName="content"
+          placeholder="Écrivez ici votre commentaire"
+          rows="2"
+          class="comment-input"
+        ></textarea>
+        <div class="error-message" *ngIf="commentForm.get('content')?.hasError('minlength') && commentForm.get('content')?.touched">
+          Le commentaire doit contenir au moins 3 caractères
+        </div>
+      </div>
       <button
         type="submit"
         [disabled]="commentForm.invalid || isSubmitting"

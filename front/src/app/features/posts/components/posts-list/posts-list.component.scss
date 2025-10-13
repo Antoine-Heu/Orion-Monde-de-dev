@@ -120,8 +120,26 @@
 }
 
 @media (max-width: 768px) {
+  .posts-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .create-btn {
+    width: 60%;
+    max-width: 300px;
+  }
+
+  .sort-container {
+    width: 100%;
+    justify-content: center;
+  }
+
   .posts-grid {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 
   .posts-container {

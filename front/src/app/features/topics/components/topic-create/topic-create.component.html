@@ -1,6 +1,14 @@
 <div class="create-topic-container">
+  <div class="title-section">
+    <div class="back-btn" (click)="goBack()">
+      <mat-icon>keyboard_backspace</mat-icon>
+    </div>
+    <div class="topic-content-wrapper">
+      <h1 class="topic-title">Créer un thème</h1>
+    </div>
+  </div>
+
   <div class="create-topic-content">
-    <h1>Créer un thème</h1>
 
     <form [formGroup]="topicForm" (ngSubmit)="onSubmit()" class="topic-form">
       <div class="form-group">
@@ -12,6 +20,9 @@
           placeholder="Entrez le titre du thème">
         <div class="error-message" *ngIf="topicForm.get('title')?.hasError('required') && topicForm.get('title')?.touched">
           Le titre est requis
+        </div>
+        <div class="error-message" *ngIf="topicForm.get('title')?.hasError('minlength') && topicForm.get('title')?.touched">
+          Le titre doit contenir au moins 3 caractères
         </div>
       </div>
 
@@ -25,6 +36,9 @@
         <div class="error-message" *ngIf="topicForm.get('description')?.hasError('required') && topicForm.get('description')?.touched">
           La description est requise
         </div>
+        <div class="error-message" *ngIf="topicForm.get('description')?.hasError('minlength') && topicForm.get('description')?.touched">
+          La description doit contenir au moins 10 caractères
+        </div>
       </div>
 
       <div class="error-message" *ngIf="errorMessage">
@@ -32,7 +46,6 @@
       </div>
 
       <div class="form-actions">
-        <button type="button" class="cancel-btn" (click)="cancel()">Annuler</button>
         <button
           type="submit"
           [disabled]="topicForm.invalid || isLoading"
