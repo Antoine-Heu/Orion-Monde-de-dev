@@ -24,6 +24,7 @@ public class Post {
     LocalDateTime createdAt;
 
     @NotEmpty
+    @Column(columnDefinition = "TEXT")
     String content;
 
     @ManyToOne

@@ -72,7 +72,6 @@ public class UserServiceImpl implements UserService {
         User updatedUser = userRepository.save(user);
         UserResponseDto response = modelMapper.map(updatedUser, UserResponseDto.class);
 
-        // Note: Le front devra gérer la déconnexion si l'email a changé
         return response;
     }
 }
