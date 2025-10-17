@@ -14,7 +14,6 @@ export class AuthService {
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    this.checkAuthStatus();
   }
 
   login(loginRequest: LoginRequest): Observable<void> {
@@ -59,8 +58,13 @@ export class AuthService {
     );
   }
 
-  private checkAuthStatus(): void {
-    this.checkAuth().subscribe();
+  initializeAuth(): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.checkAuth().subscribe({
+        next: (isAuthenticated) => resolve(isAuthenticated),
+        error: () => resolve(false)
+      });
+    });
   }
 
   isLoggedIn(): boolean {

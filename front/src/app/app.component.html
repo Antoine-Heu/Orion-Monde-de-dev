@@ -1,5 +1,9 @@
 <div class="app-container">
-  <app-header></app-header>
+  <!-- Header pour les pages d'authentification (login, register) -->
+  <app-auth-header *ngIf="showAuthHeader$ | async"></app-auth-header>
+
+  <!-- Header pour les pages connectées (posts, topics, profile) -->
+  <app-header *ngIf="showAppHeader$ | async"></app-header>
 
   <main class="main-content">
     <router-outlet></router-outlet>

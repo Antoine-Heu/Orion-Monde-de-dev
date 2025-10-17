@@ -117,9 +117,6 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
   min-width: 160px;
-}
-
-.submit-btn {
   background-color: rgba(141, 0, 234, 1);
   color: white;
 
@@ -139,15 +136,47 @@
     padding: 1rem;
   }
 
-  .create-post-content {
-    padding: 1.5rem;
+  .title-section {
+    margin-bottom: 0.5rem;
+  }
 
-    h1 {
+  .post-content-wrapper {
+    padding: 0.5rem;
+
+    .post-title {
+      margin: 0 0 0.5rem 0;
       font-size: 1.5rem;
+      text-align: center;
     }
+  }
+
+  .back-btn {
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .submit-btn {
+    max-width: 5rem;
+  }
+
+  .create-post-content {
+    padding: 0;
+  }
+
+  .form-group {
+    padding: 0;
+  }
+
+  .form-textarea {
+    max-height: 100px;
+    min-height: 80px;
   }
 
   .form-actions {
     flex-direction: column;
+    align-items: center;
   }
 }

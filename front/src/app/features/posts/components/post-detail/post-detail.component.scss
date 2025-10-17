@@ -224,15 +224,6 @@ h4 {
   min-width: 150px;
 }
 
-.comment-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: #e0e0e0;
-  border: 2px solid #999;
-  flex-shrink: 0;
-}
-
 .comment-author {
   font-weight: 600;
   color: #333;
@@ -255,6 +246,22 @@ h4 {
 
 // Responsive
 @media (max-width: 768px) {
+  .post-detail-container {
+    padding: 1rem;
+  }
+
+  .back-btn {
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .post-main {
+    margin-bottom: 1rem;
+  }
+
   .post-meta {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -262,19 +269,44 @@ h4 {
     font-size: 14px;
     margin-bottom: 1rem;
 
-    .post-date,
-    .post-author {
-      // Date et Auteur sur la première ligne
-    }
-
     .post-topic {
       // Thème sur la deuxième ligne, prend toute la largeur
       grid-column: 1 / -1;
     }
   }
 
+  .post-content-wrapper {
+    padding: 0.5rem;
+
+    h1 {
+      margin: 0 0 1rem 0;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #333;
+      text-align: start;
+    }
+  }
+
   .comments-section {
-    margin-top: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 6rem;
+  }
+
+  .comments-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+
+  .comment-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+    
+    & .comment-author {
+      font-weight: 400;
+    }
   }
 
   .comment-form-container {
@@ -282,7 +314,16 @@ h4 {
   }
 
   .comment-item {
-    padding: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .comment-header {
+    width: 100px;
+    min-width: 100px;
+  }
+
+  .comment-author {
+    font-size: 13px;
   }
 
   .submit-comment-btn {

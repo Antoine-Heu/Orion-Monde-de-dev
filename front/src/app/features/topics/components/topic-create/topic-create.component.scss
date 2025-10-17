@@ -138,15 +138,42 @@
     padding: 1rem;
   }
 
-  .create-topic-content {
-    padding: 1.5rem;
+  .title-section {
+    margin-bottom: 0.5rem;
+  }
 
-    h1 {
+  .topic-content-wrapper {
+    padding: 0.5rem;
+
+    .topic-title {
+      margin: 0 0 0.5rem 0;
       font-size: 1.5rem;
+      text-align: center;
     }
+  }
+
+  .back-btn {
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .create-topic-content {
+    padding: 0;
+  }
+
+  .form-group {
+    padding: 0;
+  }
+
+  .submit-btn {
+    max-width: 5rem;
   }
 
   .form-actions {
     flex-direction: column;
+    align-items: center;
   }
 }

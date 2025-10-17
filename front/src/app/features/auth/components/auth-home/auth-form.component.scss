@@ -154,11 +154,6 @@
 }
 
 @media (max-width: 768px) {
-  // Cacher le header en mobile sur les pages login/register
-  ::ng-deep app-header {
-    display: none;
-  }
-
   .auth-page {
     padding-top: 1rem;
     min-height: 20vh;
@@ -176,7 +171,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 1rem;
+    margin-top: 3rem;
     margin-bottom: 0.5rem;
   }
 

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,11 +13,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { HeaderComponent } from './header/header.component';
+import { AuthService } from './services/auth.service';
+import { AuthHeaderComponent } from './header/auth-header/auth-header.component';
+
+export function initializeApp(authService: AuthService) {
+  return (): Promise<boolean> => authService.initializeAuth();
+}
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    AuthHeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +43,12 @@ import { HeaderComponent } from './header/header.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [AuthService],
       multi: true
     }
   ],

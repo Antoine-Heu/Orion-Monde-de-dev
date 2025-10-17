@@ -3,6 +3,7 @@
   border-bottom: 1px solid #e0e0e0;
   width: 100%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-height: 60px;
 }
 
 .header-content {
@@ -104,7 +105,6 @@
 
 // Menu mobile déroulant
 .mobile-menu {
-  display: none;
   position: absolute;
   top: 100%;
   right: 0;
@@ -113,6 +113,8 @@
   border-radius: 0 0 0 8px;
   min-width: 200px;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
 }
 
 .mobile-menu-item {
@@ -177,12 +179,6 @@
   // Afficher le bouton hamburger en mobile
   .hamburger-menu {
     display: flex;
-  }
-
-  // Afficher le menu mobile quand il est ouvert
-  .mobile-menu {
-    display: flex;
-    flex-direction: column;
   }
 
   .logout-btn {

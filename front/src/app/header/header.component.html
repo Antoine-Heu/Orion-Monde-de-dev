@@ -1,17 +1,17 @@
-<header class="header" *ngIf="showHeader">
+<header class="header">
   <div class="header-content">
     <!-- Logo -->
     <img src="assets/logo_p6.png" alt="Logo" class="header-logo">
 
     <!-- Bouton hamburger pour mobile -->
-    <button class="hamburger-menu" *ngIf="showHamburger" (click)="toggleMenu()" [class.open]="isMenuOpen">
+    <button class="hamburger-menu" (click)="toggleMenu()" [class.open]="isMenuOpen">
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
     </button>
 
     <!-- Navigation pour utilisateurs connectés (Desktop) -->
-    <nav class="header-nav desktop-nav" *ngIf="showNav">
+    <nav class="header-nav desktop-nav">
       <a class="logout-link" (click)="logout()">Se déconnecter</a>
       <a class="nav-link" routerLink="/posts" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: false}">Articles</a>
       <a class="nav-link" routerLink="/topics" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: false}">Thèmes</a>
@@ -21,7 +21,7 @@
     </nav>
 
     <!-- Menu mobile déroulant -->
-    <nav class="mobile-menu" *ngIf="showNav && isMenuOpen">
+    <nav class="mobile-menu" *ngIf="isMenuOpen">
       <a class="mobile-menu-item logout-item" (click)="logout(); closeMenu()">Se déconnecter</a>
       <a class="mobile-menu-item" routerLink="/posts" (click)="closeMenu()">Articles</a>
       <a class="mobile-menu-item" routerLink="/topics" (click)="closeMenu()">Thèmes</a>
