@@ -22,7 +22,6 @@ export class PostService {
   loadUserFeed(): void {
     this.http.get<PostsResponse>(`${this.API_URL}/feed`).subscribe({
       next: (response) => {
-        // Gérer le cas où response.posts est null
         this.postsSubject.next(response.posts || []);
       },
       error: (err) => {

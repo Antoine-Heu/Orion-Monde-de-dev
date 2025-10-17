@@ -48,7 +48,6 @@ export class TopicsListComponent implements OnInit, OnDestroy {
   }
 
   subscribe(topic: TopicWithSubscription): void {
-    // Ne rien faire si déjà abonné
     if (topic.isSubscribed) {
       return;
     }

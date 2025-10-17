@@ -77,7 +77,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.errorMessage = '';
       this.successMessage = '';
 
-      // Sauvegarder l'email actuel pour vérifier s'il a changé
       const currentEmail = this.userDetail?.email;
 
       const updateData: any = {
@@ -85,7 +84,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         email: this.profileForm.value.email
       };
 
-      // Seulement inclure le password si différent de "Mot de passe"
       if (this.profileForm.value.password && this.profileForm.value.password !== 'Mot de passe') {
         updateData.password = this.profileForm.value.password;
       }
@@ -94,9 +92,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (user) => {
-            // Vérifier si l'email a changé
             if (currentEmail && user.email !== currentEmail) {
-              // L'email a changé, déconnecter et rediriger
               this.successMessage = 'Profil mis à jour. Vous allez être déconnecté...';
               setTimeout(() => {
                 this.authService.logout()
@@ -112,10 +108,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
                   });
               }, 1500);
             } else {
-              // Pas de changement d'email, simple mise à jour
               this.successMessage = 'Profil mis à jour avec succès';
               this.isSaving = false;
-              // Recharger le profil
               this.loadUserProfile();
             }
           },
@@ -137,7 +131,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
-            // Retirer le topic de la liste
             if (this.userDetail) {
               this.userDetail.subscribedTopics = this.userDetail.subscribedTopics.filter(
                 t => t.id !== topic.id
@@ -155,7 +148,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   onPasswordFocus(): void {
-    // Vider le champ password quand on clique dessus
     if (this.profileForm.value.password === 'Mot de passe') {
       this.profileForm.patchValue({ password: '' });
     }

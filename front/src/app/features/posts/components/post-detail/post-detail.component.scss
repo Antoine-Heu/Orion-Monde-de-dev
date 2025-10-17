@@ -75,10 +75,9 @@ h4 {
       }
   }
 
-// Section commentaires
 .comments-section {
   padding-top: 4rem;
-  padding-bottom: 8rem; // Espace pour le formulaire fixe
+  padding-bottom: 8rem; 
   border-top: 2px solid #e0e0e0;
 }
 
@@ -89,7 +88,6 @@ h4 {
   margin-bottom: 2rem;
 }
 
-// Formulaire de commentaire fixe en bas
 .comment-form-fixed {
   position: fixed;
   bottom: 0;
@@ -189,7 +187,6 @@ h4 {
   }
 }
 
-// Liste des commentaires
 .comments-list {
   display: flex;
   flex-direction: column;
@@ -244,7 +241,6 @@ h4 {
   word-wrap: break-word;
 }
 
-// Responsive
 @media (max-width: 768px) {
   .post-detail-container {
     padding: 1rem;
@@ -270,7 +266,6 @@ h4 {
     margin-bottom: 1rem;
 
     .post-topic {
-      // Thème sur la deuxième ligne, prend toute la largeur
       grid-column: 1 / -1;
     }
   }

@@ -36,7 +36,6 @@ export class SubscriptionService {
   subscribe(topicId: number): Observable<void> {
     return this.http.post<void>(`${this.API_URL}/${topicId}/subscribe`, {}).pipe(
       tap(() => {
-        // Recharger les abonnements pour mettre à jour subscribedTopicIds$
         this.loadUserSubscriptions();
       })
     );
@@ -45,7 +44,6 @@ export class SubscriptionService {
   unsubscribe(topicId: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${topicId}/subscribe`).pipe(
       tap(() => {
-        // Recharger les abonnements pour mettre à jour subscribedTopicIds$
         this.loadUserSubscriptions();
       })
     );

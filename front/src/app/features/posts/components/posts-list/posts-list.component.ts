@@ -25,11 +25,7 @@ export class PostsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Charger les abonnements au démarrage
     this.subscriptionService.loadUserSubscriptions();
-
-    // Pattern réactif : écouter les changements d'abonnements
-    // et recharger automatiquement le feed
     this.posts$ = this.subscriptionService.subscribedTopicIds$.pipe(
       tap(() => this.postService.loadUserFeed()),
       switchMap(() => this.postService.posts$),
@@ -38,7 +34,6 @@ export class PostsListComponent implements OnInit {
   }
 
   applySorting(): void {
-    // Recréer l'observable avec le nouveau tri
     this.posts$ = this.subscriptionService.subscribedTopicIds$.pipe(
       switchMap(() => this.postService.posts$),
       map(posts => this.sortPosts([...posts], this.currentSort))

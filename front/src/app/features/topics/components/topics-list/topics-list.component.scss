@@ -101,7 +101,6 @@
     background-color: #666;
     cursor: not-allowed;
 
-    // Garder le fond gris même quand désactivé
     &:disabled {
       background-color: #666;
     }
